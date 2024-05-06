@@ -1,20 +1,23 @@
 import { useState } from 'react';
 
-export default function DeverCasaComponent() {
+export default function DeverCasaComponent({ aulasData, onChange }) {
     const [tipoDeverCasa, setTipoDeverCasa] = useState('');
     const [detalhesDeverCasa, setDetalhesDeverCasa] = useState('');
     const [paginasLivro, setPaginasLivro] = useState('');
 
     const handleTipoDeverChange = (e) => {
         setTipoDeverCasa(e.target.value);
+        onChange('tipoDeverCasa', e.target.value); // Chama a função onChange passando o campo e o valor
     };
 
     const handleDetalhesDeverChange = (e) => {
         setDetalhesDeverCasa(e.target.value);
+        onChange('detalhesDeverCasa', e.target.value); // Chama a função onChange passando o campo e o valor
     };
 
     const handlePaginasLivroChange = (e) => {
         setPaginasLivro(e.target.value);
+        onChange('paginasLivro', e.target.value); // Chama a função onChange passando o campo e o valor
     };
 
     return (

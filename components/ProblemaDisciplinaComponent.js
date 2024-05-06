@@ -1,10 +1,12 @@
 import { useState } from 'react';
 
-export default function ProblemaDisciplinaComponent() {
+export default function ProblemaDisciplinaComponent({ aulasData, onChange }) {
     const [detalhes, setDetalhes] = useState('');
 
     const handleDetalhesChange = (e) => {
         setDetalhes(e.target.value);
+        onChange('detalhes', e.target.value); // Chama a função onChange passando o campo e o valor
+
     };
 
     return (

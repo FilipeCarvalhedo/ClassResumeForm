@@ -1,15 +1,17 @@
 import { useState } from 'react';
 
-export default function TrabalhoComponent() {
+export default function TrabalhoComponent({ aulasData, onChange }) {
     const [detalhesTrabalho, setDetalhesTrabalho] = useState('');
     const [dataEntrega, setDataEntrega] = useState('');
 
     const handleDetalhesTrabalhoChange = (e) => {
         setDetalhesTrabalho(e.target.value);
+        onChange('detalhesTrabalho', e.target.value); // Chama a função onChange passando o campo e o valor
     };
 
     const handleDataEntregaChange = (e) => {
         setDataEntrega(e.target.value);
+        onChange('dataEntrega', e.target.value); // Chama a função onChange passando o campo e o valor
     };
 
     return (

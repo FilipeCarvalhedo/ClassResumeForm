@@ -1,3 +1,6 @@
+require('dotenv').config(); // Carregar as variáveis de ambiente do arquivo .env
+
+
 import { useState, useEffect } from 'react';
 import AulaComponent from '../components/AulaComponent';
 
@@ -47,27 +50,57 @@ export default function Formulario() {
             return updatedAulasData;
         });
     };
-
+    
     const buildEmailMessage = (num_aulas, aulasData) => {
         let message = `Registro de Aulas\n\nQuantidade de aulas: ${num_aulas}\n\n`;
+    
         aulasData.forEach((aulaData, index) => {
             message += `Aula ${index + 1}:\n`;
+            message += `------------------------------\n`; // Divisão visual
+    
+            // Seção padrão: Matéria, Resumo da Aula e Capítulos
             message += `Matéria: ${aulaData.materia}\n`;
             message += `Resumo da Aula: ${aulaData.resumoAula}\n`;
             message += `Capítulos: ${aulaData.capitulos}\n`;
+            message += `\n`;
+    
+            // Seção de Dever de Casa
+            message += `Dever de Casa:\n`;
             message += `Teve dever de casa: ${aulaData.teveDeverCasa ? 'Sim' : 'Não'}\n`;
-            if (aulaData.teve_dever_casa && aulaData.dever_casa) {
-                message += `Tipo de dever de casa: ${aulaData.dever_casa}\n`;
-                if (aulaData.dever_casa === 'Livro' && aulaData.paginas) {
-                    message += `Páginas: ${aulaData.paginas}\n`;
+            if (aulaData.teveDeverCasa && aulaData.deverCasa) {
+                message += `Tipo de dever de casa: ${aulaData.deverCasa.tipoDeverCasa}\n`;
+                if (aulaData.deverCasa.tipoDeverCasa === 'Livro' && aulaData.deverCasa.paginasLivro) {
+                    message += `Páginas: ${aulaData.deverCasa.paginasLivro}\n`;
                 } else {
-                    message += `Detalhes: ${aulaData.detalhes}\n`;
+                    message += `Detalhes: ${aulaData.deverCasa.detalhesDeverCasa}\n`;
                 }
             }
-            message += '\n';
+            message += `\n`;
+    
+            // Seção de Trabalho
+            message += `Trabalho:\n`;
+            message += `Teve trabalho: ${aulaData.teveTrabalho ? 'Sim' : 'Não'}\n`;
+            if (aulaData.teveTrabalho && aulaData.trabalho) {
+                message += `Detalhes do trabalho: ${aulaData.trabalho.detalhesTrabalho}\n`;
+                message += `Data de entrega do trabalho: ${aulaData.trabalho.dataEntrega}\n`;
+            }
+            message += `\n`;
+    
+            // Seção de Problema de Disciplina
+            message += `Problema de Disciplina:\n`;
+            message += `Teve problema de disciplina: ${aulaData.teveProblemaDisciplina ? 'Sim' : 'Não'}\n`;
+            if (aulaData.teveProblemaDisciplina && aulaData.disciplina) {
+                message += `Detalhes do problema de disciplina: ${aulaData.disciplina.detalhes}\n`;
+            }
+            message += `\n`;
+    
+            message += `------------------------------\n\n`; // Divisão visual entre aulas
         });
+    
         return message;
     };
+    
+    
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -83,8 +116,8 @@ export default function Formulario() {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    to: 'filipecarvalhedo@hotmail.com',
-                    subject: 'Registro de Aulas',
+                    to: process.env.EMAIL_TO,
+                    subject: 'Registro de Aulas: Fernando',
                     text: emailText
                 })
             });
@@ -116,7 +149,7 @@ export default function Formulario() {
                     required
                 /><br /><br />
                 {[...Array(numAulas)].map((_, index) => (
-                    <AulaComponent key={index} index={index} materias={materias} onChange={handleAulaChange} />
+                    <AulaComponent key={index} index={index} materias={materias} aulasData={aulasData} setAulasData={setAulasData} onChange={handleAulaChange} />
                 ))}
                 <input type="submit" value="Enviar" />
             </form>

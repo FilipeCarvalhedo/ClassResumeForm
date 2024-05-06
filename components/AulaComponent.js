@@ -4,7 +4,7 @@ import DeverCasaComponent from './DeverCasaComponent';
 import TrabalhoComponent from './TrabalhoComponent';
 import ProblemaDisciplinaComponent from './ProblemaDisciplinaComponent';
 
-export default function AulaComponent({ index, onChange }) {
+export default function AulaComponent({ index, materias, aulasData, setAulasData, onChange }) {
     const [materia, setMateria] = useState('');
     const [resumoAula, setResumoAula] = useState('');
     const [capitulos, setCapitulos] = useState('');
@@ -40,6 +40,30 @@ export default function AulaComponent({ index, onChange }) {
             }
             // Atualizamos o campo específico do dever de casa
             updatedAulasData[index].deverCasa[field] = value;
+            // Atualizamos o estado de aulasData com a nova cópia atualizada
+            setAulasData(updatedAulasData);
+        }
+        else if (field === 'detalhesTrabalho' || field === 'dataEntrega') {
+            // Fazemos uma cópia do estado atual de aulasData
+            const updatedAulasData = [...aulasData];
+            // Se ainda não houver uma entrada para o dever de casa neste índice de aulasData, criamos uma nova entrada
+            if (!updatedAulasData[index].trabalho) {
+                updatedAulasData[index].trabalho = {};
+            }
+            // Atualizamos o campo específico do dever de casa
+            updatedAulasData[index].trabalho[field] = value;
+            // Atualizamos o estado de aulasData com a nova cópia atualizada
+            setAulasData(updatedAulasData);
+        }
+        else if (field === 'detalhes') {
+            // Fazemos uma cópia do estado atual de aulasData
+            const updatedAulasData = [...aulasData];
+            // Se ainda não houver uma entrada para o dever de casa neste índice de aulasData, criamos uma nova entrada
+            if (!updatedAulasData[index].disciplina) {
+                updatedAulasData[index].disciplina = {};
+            }
+            // Atualizamos o campo específico do dever de casa
+            updatedAulasData[index].disciplina[field] = value;
             // Atualizamos o estado de aulasData com a nova cópia atualizada
             setAulasData(updatedAulasData);
         } else {
@@ -82,7 +106,7 @@ export default function AulaComponent({ index, onChange }) {
                         onChange={handleCheckboxChange}
                     />
                 </label>
-                {teveDeverCasa && <DeverCasaComponent index={index} onChange={handleAulaChange} />}
+                {teveDeverCasa && <DeverCasaComponent aulasData={aulasData} onChange={handleAulaChange} />}
             </div>
             <div style={{ marginBottom: '10px' }}>
                 <label htmlFor={`teveTrabalho`} style={{ marginRight: '10px' }}>
@@ -95,7 +119,7 @@ export default function AulaComponent({ index, onChange }) {
                         onChange={handleCheckboxChange}
                     />
                 </label>
-                {teveTrabalho && <TrabalhoComponent index={index} />}
+                {teveTrabalho && <TrabalhoComponent aulasData={aulasData} onChange={handleAulaChange} />}
             </div>
             <div style={{ marginBottom: '10px' }}>
                 <label htmlFor={`teveProblemaDisciplina`} style={{ marginRight: '10px' }}>
@@ -108,7 +132,7 @@ export default function AulaComponent({ index, onChange }) {
                         onChange={handleCheckboxChange}
                     />
                 </label>
-                {teveProblemaDisciplina && <ProblemaDisciplinaComponent index={index} />}
+                {teveProblemaDisciplina && <ProblemaDisciplinaComponent aulasData={aulasData} onChange={handleAulaChange} />}
             </div>
             <div style={{ marginBottom: '10px' }}>
                 <hr style={{ borderTop: '2px solid #ccc' }} />
