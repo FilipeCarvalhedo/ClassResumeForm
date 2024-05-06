@@ -1,6 +1,3 @@
-require('dotenv').config(); // Carregar as variáveis de ambiente do arquivo .env
-
-
 import { useState, useEffect } from 'react';
 import AulaComponent from '../components/AulaComponent';
 
@@ -65,34 +62,45 @@ export default function Formulario() {
             message += `\n`;
     
             // Seção de Dever de Casa
-            message += `Dever de Casa:\n`;
-            message += `Teve dever de casa: ${aulaData.teveDeverCasa ? 'Sim' : 'Não'}\n`;
-            if (aulaData.teveDeverCasa && aulaData.deverCasa) {
-                message += `Tipo de dever de casa: ${aulaData.deverCasa.tipoDeverCasa}\n`;
-                if (aulaData.deverCasa.tipoDeverCasa === 'Livro' && aulaData.deverCasa.paginasLivro) {
-                    message += `Páginas: ${aulaData.deverCasa.paginasLivro}\n`;
-                } else {
-                    message += `Detalhes: ${aulaData.deverCasa.detalhesDeverCasa}\n`;
+            if(aulaData.teveDeverCasa)
+            {
+                message += `Dever de Casa:\n`;
+                message += `Teve dever de casa: ${aulaData.teveDeverCasa ? 'Sim' : 'Não'}\n`;
+                if (aulaData.teveDeverCasa && aulaData.deverCasa) {
+                    message += `Tipo de dever de casa: ${aulaData.deverCasa.tipoDeverCasa}\n`;
+                    if (aulaData.deverCasa.tipoDeverCasa === 'Livro' && aulaData.deverCasa.paginasLivro) {
+                        message += `Páginas: ${aulaData.deverCasa.paginasLivro}\n`;
+                    } else {
+                        message += `Detalhes: ${aulaData.deverCasa.detalhesDeverCasa}\n`;
+                    }
                 }
+                message += `\n`;
             }
-            message += `\n`;
+            
     
             // Seção de Trabalho
-            message += `Trabalho:\n`;
-            message += `Teve trabalho: ${aulaData.teveTrabalho ? 'Sim' : 'Não'}\n`;
-            if (aulaData.teveTrabalho && aulaData.trabalho) {
-                message += `Detalhes do trabalho: ${aulaData.trabalho.detalhesTrabalho}\n`;
-                message += `Data de entrega do trabalho: ${aulaData.trabalho.dataEntrega}\n`;
+            if(aulaData.teveTrabalho)
+            {
+                message += `Trabalho:\n`;
+                message += `Teve trabalho: ${aulaData.teveTrabalho ? 'Sim' : 'Não'}\n`;
+                if (aulaData.teveTrabalho && aulaData.trabalho) {
+                    message += `Detalhes do trabalho: ${aulaData.trabalho.detalhesTrabalho}\n`;
+                    message += `Data de entrega do trabalho: ${aulaData.trabalho.dataEntrega}\n`;
+                }
+                message += `\n`;
             }
-            message += `\n`;
     
             // Seção de Problema de Disciplina
-            message += `Problema de Disciplina:\n`;
-            message += `Teve problema de disciplina: ${aulaData.teveProblemaDisciplina ? 'Sim' : 'Não'}\n`;
-            if (aulaData.teveProblemaDisciplina && aulaData.disciplina) {
-                message += `Detalhes do problema de disciplina: ${aulaData.disciplina.detalhes}\n`;
+            if(aulaData.teveProblemaDisciplina)
+            {
+                message += `Problema de Disciplina:\n`;
+                message += `Teve problema de disciplina: ${aulaData.teveProblemaDisciplina ? 'Sim' : 'Não'}\n`;
+                if (aulaData.teveProblemaDisciplina && aulaData.disciplina) {
+                    message += `Detalhes do problema de disciplina: ${aulaData.disciplina.detalhes}\n`;
+                }
+                message += `\n`;
             }
-            message += `\n`;
+           
     
             message += `------------------------------\n\n`; // Divisão visual entre aulas
         });
@@ -116,7 +124,7 @@ export default function Formulario() {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    to: process.env.EMAIL_TO,
+                    to: "",
                     subject: 'Registro de Aulas: Fernando',
                     text: emailText
                 })
@@ -149,7 +157,10 @@ export default function Formulario() {
                     required
                 /><br /><br />
                 {[...Array(numAulas)].map((_, index) => (
-                    <AulaComponent key={index} index={index} materias={materias} aulasData={aulasData} setAulasData={setAulasData} onChange={handleAulaChange} />
+                    <div key={index}>
+                        <AulaComponent key={index} index={index} materias={materias} aulasData={aulasData} setAulasData={setAulasData} onChange={handleAulaChange} />
+                        {index !== numAulas - 1 && <hr />} {/* Separador */}
+                    </div>
                 ))}
                 <input type="submit" value="Enviar" />
             </form>

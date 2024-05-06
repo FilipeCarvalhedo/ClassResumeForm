@@ -3,6 +3,7 @@ import AulaPrincipalComponent from './AulaPrincipalComponent';
 import DeverCasaComponent from './DeverCasaComponent';
 import TrabalhoComponent from './TrabalhoComponent';
 import ProblemaDisciplinaComponent from './ProblemaDisciplinaComponent';
+import './styles/custom.css';
 
 export default function AulaComponent({ index, materias, aulasData, setAulasData, onChange }) {
     const [materia, setMateria] = useState('');
@@ -18,6 +19,7 @@ export default function AulaComponent({ index, materias, aulasData, setAulasData
     }, [index]);
 
     const handleCheckboxChange = (e) => {
+        e.stopPropagation(); // Impede a propagação do evento para os elementos pais
         const { name, checked } = e.target;
         if (name === `teveDeverCasa`) {
             setTeveDeverCasa(checked);
@@ -78,8 +80,6 @@ export default function AulaComponent({ index, materias, aulasData, setAulasData
             });
         }
     };
-    
-    
 
     const handleAulaPrincipalChange = (field, value) => {
         if (field === 'materia') {
@@ -93,49 +93,54 @@ export default function AulaComponent({ index, materias, aulasData, setAulasData
     };
 
     return (
-        <div>
-            <AulaPrincipalComponent index={index} onChange={handleAulaPrincipalChange} />
-            <div style={{ marginBottom: '10px' }}>
-                <label htmlFor={`teveDeverCasa`} style={{ marginRight: '10px' }}>
-                    Teve dever de casa:
-                    <input
-                        type="checkbox"
-                        id={`teveDeverCasa`}
-                        name={`teveDeverCasa`}
-                        checked={teveDeverCasa}
-                        onChange={handleCheckboxChange}
-                    />
-                </label>
-                {teveDeverCasa && <DeverCasaComponent aulasData={aulasData} onChange={handleAulaChange} />}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gridColumnGap: '20px', marginBottom: '20px' }}>
+            <div>
+                <AulaPrincipalComponent index={index} onChange={handleAulaPrincipalChange} />
             </div>
-            <div style={{ marginBottom: '10px' }}>
-                <label htmlFor={`teveTrabalho`} style={{ marginRight: '10px' }}>
-                    Teve trabalho:
-                    <input
-                        type="checkbox"
-                        id={`teveTrabalho`}
-                        name={`teveTrabalho`}
-                        checked={teveTrabalho}
-                        onChange={handleCheckboxChange}
-                    />
-                </label>
-                {teveTrabalho && <TrabalhoComponent aulasData={aulasData} onChange={handleAulaChange} />}
+            <div>
+                <div style={{ marginBottom: '10px' }}>
+                    <label htmlFor={`teveDeverCasa`} style={{ marginRight: '10px' }}>
+                        Teve dever de casa:
+                        <input
+                            type="checkbox"
+                            id={`teveDeverCasa`}
+                            name={`teveDeverCasa`}
+                            checked={teveDeverCasa}
+                            onChange={handleCheckboxChange}
+                        />
+                    </label>
+                    {teveDeverCasa && <DeverCasaComponent onChange={handleAulaChange} />}
+                </div>
             </div>
-            <div style={{ marginBottom: '10px' }}>
-                <label htmlFor={`teveProblemaDisciplina`} style={{ marginRight: '10px' }}>
-                    Teve problema de disciplina:
-                    <input
-                        type="checkbox"
-                        id={`teveProblemaDisciplina`}
-                        name={`teveProblemaDisciplina`}
-                        checked={teveProblemaDisciplina}
-                        onChange={handleCheckboxChange}
-                    />
-                </label>
-                {teveProblemaDisciplina && <ProblemaDisciplinaComponent aulasData={aulasData} onChange={handleAulaChange} />}
+            <div>
+                <div style={{ marginBottom: '10px' }}>
+                    <label htmlFor={`teveTrabalho`} style={{ marginRight: '10px' }}>
+                        Teve trabalho:
+                        <input
+                            type="checkbox"
+                            id={`teveTrabalho`}
+                            name={`teveTrabalho`}
+                            checked={teveTrabalho}
+                            onChange={handleCheckboxChange}
+                        />
+                    </label>
+                    {teveTrabalho && <TrabalhoComponent onChange={handleAulaChange} />}
+                </div>
             </div>
-            <div style={{ marginBottom: '10px' }}>
-                <hr style={{ borderTop: '2px solid #ccc' }} />
+            <div>
+                <div style={{ marginBottom: '10px' }}>
+                    <label htmlFor={`teveProblemaDisciplina`} style={{ marginRight: '10px' }}>
+                        Teve problema de disciplina:
+                        <input
+                            type="checkbox"
+                            id={`teveProblemaDisciplina`}
+                            name={`teveProblemaDisciplina`}
+                            checked={teveProblemaDisciplina}
+                            onChange={handleCheckboxChange}
+                        />
+                    </label>
+                    {teveProblemaDisciplina && <ProblemaDisciplinaComponent onChange={handleAulaChange} />}
+                </div>
             </div>
         </div>
     );

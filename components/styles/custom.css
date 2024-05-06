@@ -1,0 +1,6 @@
+/* custom.css */
+
+input[type="checkbox"] {
+  transform: scale(1.5); /* Aumenta o tamanho do checkbox */
+  margin-right: 0px; /* Espaçamento entre os checkboxes */
+}

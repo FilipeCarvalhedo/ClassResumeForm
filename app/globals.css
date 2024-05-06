@@ -31,3 +31,8 @@ body {
     text-wrap: balance;
   }
 }
+
+input[type="checkbox"] {
+  transform: scale(2); /* Aumenta o tamanho do checkbox */
+  margin-right: 0px; /* Espaçamento entre os checkboxes */
+}

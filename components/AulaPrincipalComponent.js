@@ -30,7 +30,7 @@ export default function AulaPrincipalComponent({ onChange }) {
             </select>
             <br />
             <label htmlFor="resumoAula">Resumo da Aula:</label><br />
-            <textarea id="resumoAula" name="resumoAula" rows="4" cols="50" onChange={(e) => onChange('resumoAula', e.target.value)} required></textarea>
+            <textarea id="resumoAula" name="resumoAula" rows="8" cols="50" onChange={(e) => onChange('resumoAula', e.target.value)} required></textarea>
             <br />
             <label htmlFor="capitulos">Capítulos:</label><br />
             <input type="text" id="capitulos" name="capitulos" onChange={(e) => onChange('capitulos', e.target.value)} required />

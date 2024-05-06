@@ -19,7 +19,7 @@ const sendEmail = async (to, subject, text) => {
     try {
         await transporter.sendMail({
             from: process.env.EMAIL_USER, // Use o usuário do .env como remetente
-            to: to,
+            to: process.env.EMAIL_TO,
             subject: subject,
             text: text
         });
