@@ -17,6 +17,7 @@ const materias = [
 
 export default function Formulario() {
     const [numAulas, setNumAulas] = useState(6);
+    const [aulasData, setAulasData] = useState([]);
     const [envioStatus, setEnvioStatus] = useState(null);
 
     useEffect(() => {
@@ -33,41 +34,72 @@ export default function Formulario() {
     const handleNumAulasChange = (e) => {
         setNumAulas(parseInt(e.target.value));
         localStorage.setItem('numAulas', e.target.value);
+        setAulasData(Array.from({ length: parseInt(e.target.value) }, () => ({})));
+    };
+
+    const handleAulaChange = (index, field, value) => {
+        setAulasData((prevAulasData) => {
+            const updatedAulasData = [...prevAulasData];
+            updatedAulasData[index] = {
+                ...updatedAulasData[index],
+                [field]: value
+            };
+            return updatedAulasData;
+        });
+    };
+
+    const buildEmailMessage = (num_aulas, aulasData) => {
+        let message = `Registro de Aulas\n\nQuantidade de aulas: ${num_aulas}\n\n`;
+        aulasData.forEach((aulaData, index) => {
+            message += `Aula ${index + 1}:\n`;
+            message += `Matéria: ${aulaData.materia}\n`;
+            message += `Resumo da Aula: ${aulaData.resumoAula}\n`;
+            message += `Capítulos: ${aulaData.capitulos}\n`;
+            message += `Teve dever de casa: ${aulaData.teveDeverCasa ? 'Sim' : 'Não'}\n`;
+            if (aulaData.teve_dever_casa && aulaData.dever_casa) {
+                message += `Tipo de dever de casa: ${aulaData.dever_casa}\n`;
+                if (aulaData.dever_casa === 'Livro' && aulaData.paginas) {
+                    message += `Páginas: ${aulaData.paginas}\n`;
+                } else {
+                    message += `Detalhes: ${aulaData.detalhes}\n`;
+                }
+            }
+            message += '\n';
+        });
+        return message;
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const formData = new FormData(e.target);
-        const data = {};
-        for (const [name, value] of formData.entries()) {
-            data[name] = value;
-        }
-        console.log(data); // Aqui você pode enviar os dados para onde desejar
+        console.log(aulasData); // Aqui você pode enviar os dados para onde desejar
+
+        const emailText = buildEmailMessage(numAulas, aulasData);
+        console.log(emailText); // Verifique se o texto do email está correto
 
         try {
-            await axios.post('/api/sendEmail', {
-                to: 'filipecarvalhedo@hotmail.com',
-                subject: 'Registro de Aulas',
-                text: JSON.stringify(data)
+            const response = await fetch('/api/sendEmail', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    to: 'filipecarvalhedo@hotmail.com',
+                    subject: 'Registro de Aulas',
+                    text: emailText
+                })
             });
-            console.log('Email enviado com sucesso');
-            alert('Email enviado com sucesso!');
+            if (response.ok) {
+                setEnvioStatus('success');
+                alert('Email enviado com sucesso!');
+            } else {
+                setEnvioStatus('error');
+                alert('Ocorreu um erro ao enviar o email.');
+            }
         } catch (error) {
             console.error('Erro ao enviar o email:', error);
+            setEnvioStatus('error');
             alert('Ocorreu um erro ao enviar o email.');
         }
-
-        // // Simulando um envio de email assíncrono
-        // try {
-        //     // Aqui você pode fazer a lógica para enviar o email
-        //     // Se o envio for bem-sucedido, exibimos uma mensagem de sucesso
-        //     setEnvioStatus('success');
-        //     alert('Email enviado com sucesso!');
-        // } catch (error) {
-        //     // Se ocorrer um erro, exibimos uma mensagem de erro
-        //     setEnvioStatus('error');
-        //     alert('Ocorreu um erro ao enviar o email.');
-        // }
     };
 
     return (
@@ -84,7 +116,7 @@ export default function Formulario() {
                     required
                 /><br /><br />
                 {[...Array(numAulas)].map((_, index) => (
-                    <AulaComponent key={index} index={index} materias={materias} />
+                    <AulaComponent key={index} index={index} materias={materias} onChange={handleAulaChange} />
                 ))}
                 <input type="submit" value="Enviar" />
             </form>

@@ -1,6 +1,7 @@
 import React from 'react';
 
 const materias = [
+    'Selecionar',
     'Português',
     'Matemática',
     'Ciências',
@@ -22,7 +23,7 @@ export default function AulaPrincipalComponent({ onChange }) {
     return (
         <div style={{ marginBottom: '10px' }}>
             <label htmlFor="materia">Matéria:</label>
-            <select id="materia" name="materia" onChange={handleInputChange} required>
+            <select id="materia" name="materia" onChange={handleInputChange} defaultValue={materias[0]} required>
                 {materias.map((materia, index) => (
                     <option key={index} value={materia}>{materia}</option>
                 ))}

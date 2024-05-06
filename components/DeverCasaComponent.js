@@ -32,33 +32,19 @@ export default function DeverCasaComponent() {
                 <option value="Folhas a Parte">Folhas a Parte</option>
             </select>
             <br />
-            {tipoDeverCasa !== 'Livro' && (
-                <div>
-                    <label htmlFor="detalhesDeverCasa">
-                        Detalhes do Dever de Casa:
-                    </label>
-                    <br />
-                    <textarea
-                        id="detalhesDeverCasa"
-                        value={detalhesDeverCasa}
-                        onChange={handleDetalhesDeverChange}
-                        rows={6} // Aumenta o número de linhas
-                        cols={50} // Aumenta o número de colunas
-                    />
-                </div>
-            )}
-            {tipoDeverCasa === 'Livro' && (
-                <div>
-                    <label htmlFor="paginasLivro">Páginas do Livro:</label>
-                    <br />
-                    <input
-                        type="text"
-                        id="paginasLivro"
-                        value={paginasLivro}
-                        onChange={handlePaginasLivroChange}
-                    />
-                </div>
-            )}
+            <div>
+                <label htmlFor="DetalhesDeverCasa">
+                    Detalhes do Dever de Casa:
+                </label>
+                <br />
+                <textarea
+                    id="detalhesDeverCasa"
+                    value={detalhesDeverCasa}
+                    onChange={handleDetalhesDeverChange}
+                    rows={6} // Aumenta o número de linhas
+                    cols={50} // Aumenta o número de colunas
+                />
+            </div>
         </div>
     );
 }
