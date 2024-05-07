@@ -12,6 +12,8 @@ export default function AulaComponent({ index, materias, aulasData, setAulasData
     const [teveDeverCasa, setTeveDeverCasa] = useState(false);
     const [teveTrabalho, setTeveTrabalho] = useState(false);
     const [teveProblemaDisciplina, setTeveProblemaDisciplina] = useState(false);
+    const [teveDeverNaSala, setTeveDeverNaSala] = useState(false);
+    const [teveMateriaNoQuadro, setTeveMateriaNoQuadro] = useState(false);
 
     // Definindo o valor inicial da matéria como uma string vazia
     useEffect(() => {
@@ -27,6 +29,10 @@ export default function AulaComponent({ index, materias, aulasData, setAulasData
             setTeveTrabalho(checked);
         } else if (name === `teveProblemaDisciplina`) {
             setTeveProblemaDisciplina(checked);
+        } else if (name === 'teveDeverNaSala') {
+            setTeveDeverNaSala(checked);
+        } else if (name === 'teveMateriaNoQuadro') {
+            setTeveMateriaNoQuadro(checked);
         }
         onChange(index, name, checked); // Chamando a função onChange passando o índice, nome e estado do checkbox
     };
@@ -140,6 +146,32 @@ export default function AulaComponent({ index, materias, aulasData, setAulasData
                         />
                     </label>
                     {teveProblemaDisciplina && <ProblemaDisciplinaComponent onChange={handleAulaChange} />}
+                </div>
+            </div>
+            <div>
+                <div style={{ marginBottom: '10px' }}>
+                    <label htmlFor={`teveDeverNaSala`} style={{ marginRight: '10px' }}>
+                        Teve dever na sala:
+                        <input
+                            type="checkbox"
+                            id={`teveDeverNaSala`}
+                            name={`teveDeverNaSala`}
+                            checked={teveDeverNaSala}
+                            onChange={handleCheckboxChange}
+                        />
+                    </label>
+                </div>
+                <div style={{ marginBottom: '10px' }}>
+                    <label htmlFor={`teveMateriaNoQuadro`} style={{ marginRight: '10px' }}>
+                        Teve matéria no quadro:
+                        <input
+                            type="checkbox"
+                            id={`teveMateriaNoQuadro`}
+                            name={`teveMateriaNoQuadro`}
+                            checked={teveMateriaNoQuadro}
+                            onChange={handleCheckboxChange}
+                        />
+                    </label>
                 </div>
             </div>
         </div>

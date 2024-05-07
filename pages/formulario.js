@@ -62,8 +62,7 @@ export default function Formulario() {
             message += `\n`;
     
             // Seção de Dever de Casa
-            if(aulaData.teveDeverCasa)
-            {
+            if (aulaData.teveDeverCasa) {
                 message += `Dever de Casa:\n`;
                 message += `Teve dever de casa: ${aulaData.teveDeverCasa ? 'Sim' : 'Não'}\n`;
                 if (aulaData.teveDeverCasa && aulaData.deverCasa) {
@@ -76,11 +75,9 @@ export default function Formulario() {
                 }
                 message += `\n`;
             }
-            
     
             // Seção de Trabalho
-            if(aulaData.teveTrabalho)
-            {
+            if (aulaData.teveTrabalho) {
                 message += `Trabalho:\n`;
                 message += `Teve trabalho: ${aulaData.teveTrabalho ? 'Sim' : 'Não'}\n`;
                 if (aulaData.teveTrabalho && aulaData.trabalho) {
@@ -91,8 +88,7 @@ export default function Formulario() {
             }
     
             // Seção de Problema de Disciplina
-            if(aulaData.teveProblemaDisciplina)
-            {
+            if (aulaData.teveProblemaDisciplina) {
                 message += `Problema de Disciplina:\n`;
                 message += `Teve problema de disciplina: ${aulaData.teveProblemaDisciplina ? 'Sim' : 'Não'}\n`;
                 if (aulaData.teveProblemaDisciplina && aulaData.disciplina) {
@@ -100,7 +96,18 @@ export default function Formulario() {
                 }
                 message += `\n`;
             }
-           
+    
+            // Seção de Teve Dever na Sala
+            if (aulaData.teveDeverNaSala) {
+                message += `Teve dever na sala: ${aulaData.teveDeverNaSala ? 'Sim' : 'Não'}\n`;
+                message += `\n`;
+            }
+    
+            // Seção de Teve Matéria no Quadro
+            if (aulaData.teveMateriaNoQuadro) {
+                message += `Teve matéria no quadro: ${aulaData.teveMateriaNoQuadro ? 'Sim' : 'Não'}\n`;
+                message += `\n`;
+            }
     
             message += `------------------------------\n\n`; // Divisão visual entre aulas
         });
@@ -116,6 +123,16 @@ export default function Formulario() {
 
         const emailText = buildEmailMessage(numAulas, aulasData);
         console.log(emailText); // Verifique se o texto do email está correto
+
+        for(const aulaData of aulasData)
+        {
+            const words = aulaData.resumoAula.trim().split(/\s+/);
+            if(words.length<(Math.floor(Math.random() * (40 - 25 + 1)) + 25))
+            {
+                alert('Escreva mais no campo resumo das aulas!');
+                return;
+            }
+        }
 
         try {
             const response = await fetch('/api/sendEmail', {
